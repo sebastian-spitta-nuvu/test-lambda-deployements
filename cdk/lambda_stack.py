@@ -1,6 +1,7 @@
 from aws_cdk import core
 from aws_cdk import aws_lambda as _lambda
 from aws_cdk import aws_iam as iam
+import os
 
 class LambdaStack(core.Stack):
 
@@ -12,12 +13,12 @@ class LambdaStack(core.Stack):
             self, "MyLambda",
             runtime=_lambda.Runtime.PYTHON_3_8,
             handler="handler.lambda_handler",
-            code=_lambda.Code.from_asset('lambda'),
+            code=_lambda.Code.from_asset(os.path.join(os.getcwd(), "lambda"))
         )
 
-        # Permiso para invocar la función (opcional)
+        # Agregar permisos a la Lambda
         function.add_to_role_policy(
-            policy=iam.PolicyStatement(
+            iam.PolicyStatement(
                 actions=["lambda:InvokeFunction"],
                 resources=[function.function_arn]
             )
