@@ -23,13 +23,18 @@ jobs:
           python -m pip install --upgrade pip
           pip install aws-sam-cli
 
+      - name: Install AWS CDK
+        run: |
+          npm install -g aws-cdk
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
-      - name: Configure AWS credentials
+
+      - name: Deploy Lambda function
         run: |
           echo "Setting AWS Credentials"
           # Comando para desplegar
