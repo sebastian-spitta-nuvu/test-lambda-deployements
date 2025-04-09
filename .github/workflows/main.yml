@@ -1,44 +1,54 @@
-name: Deploy Lambda using AWS CDK
+# This is a basic workflow to help you get started with Actions
 
+name: CI
+
+# Controls when the workflow will run
 on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
-    branches:
-      - main
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
 
 jobs:
-  deploy:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
     runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-        
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.8'
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
 
-      - name: Install AWS CDK
+      # Runs a single command using the runners shell
+      - name: Run a one-line script
+        run: echo Hello, world!
+
+      # Runs a set of commands using the runners shell
+      - name: Run a multi-line script
         run: |
-          npm install -g aws-cdk
-
+          echo Add other actions to build,
+          echo test, and deploy your project.
+      - name: List current directory
+        run: ls
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+           python-version: '3.x'
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r cdk/requirements.txt
-
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
+          pip install -r requirements.txt
+          pytest
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-west-2
-
-      - name: Synthesize the CloudFormation template
-        run: |
-          cd cdk
-          cdk synth --app "python app.py"  # Especificar la aplicación
-
-      - name: Deploy Lambda with CDK
-        run: |
-          cd cdk
-          cdk deploy --app "python app.py" --require-approval never
+            aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_ID}}
+            aws-region: us-east-1
+      - name: Upload funciones.py at bucket
+        run: aws s3 cp app.py s3://usa-lambda-test/
