@@ -37,5 +37,5 @@ jobs:
       - name: Deploy Lambda function
         run: |
           echo "Setting AWS Credentials"
-          # Comando para desplegar
-          cdk deploy --require-approval never
+          # Especificar la aplicación CDK si no está en cdk.json
+          cdk deploy --app "python app.py" --require-approval never
