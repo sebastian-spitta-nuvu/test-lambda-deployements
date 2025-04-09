@@ -36,4 +36,4 @@ jobs:
       - name: Deploy Lambda with CDK
         run: |
           cd cdk
-          cdk deploy --require-approval never
+          cdk deploy --app "python app.py" --require-approval never
