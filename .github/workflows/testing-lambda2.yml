@@ -23,11 +23,11 @@ jobs:
           sudo apt install zip
           python -m pip install --upgrade pip
           cd testing-lambda2
-          mkdir -p ./deployment_zip 
-          pip install -r requirements.txt -t ./deployment_zip
-          cp ./lambda_function.py  ./deployment_zip
+          mkdir -p deployment_zip 
+          pip install -r requirements.txt -t deployment_zip
+          cp lambda_function.py deployment_zip
           cd deployment_zip 
           zip -r lambda_zip.zip *
       - name: lambda_code_update
         run: |
-          aws lambda update-function-code --function-name just-another-test-for-practice --zip-file fileb://./deployment_zip/lambda_zip.zip
+          aws lambda update-function-code --function-name just-another-test-for-practice --zip-file fileb://testing-lambda2/deployment_zip/lambda_zip.zip
