@@ -4,3 +4,7 @@ def prime_number(x):
             print("HOla mundo!! :D! ahora voy a hacer un push aqui")
             return False
     return True
+
+
+def lambda_handler(event, context):
+    prime_number(10)
