@@ -1,4 +1,0 @@
-cdk==1.0.12
-construct==2.10.70
-docopt==0.6.2
-Pygments==2.19.1
